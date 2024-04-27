@@ -2,10 +2,9 @@ package edu.tienda.core.controllers;
 
 import edu.tienda.core.configurations.ConfigurationParameters;
 import edu.tienda.core.domain.Product;
-import edu.tienda.core.services.ProductService;
+import edu.tienda.core.services.product.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,6 @@ public class ProductRestController {
 
     @GetMapping
     public ResponseEntity<?> getProducts() {
-        log.info("Params: " + configurationParameters.toString());
         List<Product> products = productService.getProducts();
         return ResponseEntity.ok(products);
     }

@@ -1,4 +1,4 @@
-package edu.tienda.core.services;
+package edu.tienda.core.services.product;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

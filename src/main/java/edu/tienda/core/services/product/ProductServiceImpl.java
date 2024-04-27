@@ -1,4 +1,4 @@
-package edu.tienda.core.services;
+package edu.tienda.core.services.product;
 
 import edu.tienda.core.domain.Product;
 import lombok.extern.slf4j.Slf4j;
