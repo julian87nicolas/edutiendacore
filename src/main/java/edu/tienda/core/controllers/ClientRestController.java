@@ -3,6 +3,7 @@ package edu.tienda.core.controllers;
 import edu.tienda.core.domain.Client;
 import edu.tienda.core.exceptions.BadRequestException;
 import edu.tienda.core.exceptions.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Slf4j
 @RestController
 @RequestMapping("/clients")
 public class ClientRestController {
@@ -76,7 +78,7 @@ public class ClientRestController {
         Client foundedClient = clients.stream()
                 .filter(client -> client.getUsername().equalsIgnoreCase(username))
                 .findFirst().orElseThrow(() -> new ResourceNotFoundException(String.format(CLIENT_NOT_FOUND, username)));
-        System.out.println("Client removed: " + foundedClient.getUsername());
+        log.info("Client removed: " + foundedClient.getUsername());
         clients.removeIf(client -> client.getUsername().equalsIgnoreCase(username));
 
         return ResponseEntity.noContent().build();
