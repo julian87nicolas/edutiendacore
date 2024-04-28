@@ -51,4 +51,22 @@ public class ProductRestController {
         productService.updateProduct(product);
         return ResponseEntity.ok(product);
     }
+
+    @GetMapping("/priceless")
+    public ResponseEntity<?> getProductsByPriceLessThan(@RequestParam Double price) {
+        List<Product> products = productService.getProductsByPriceLessThan(price);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/titlelike")
+    public ResponseEntity<?> getProductsByTitleLike(@RequestParam String title) {
+        List<Product> products = productService.getProductsByTitleLike(title);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/descandprice")
+    public ResponseEntity<?> getProductsByDescriptionLikeAndPriceGreaterThan(@RequestParam String description, @RequestParam Double price) {
+        List<Product> products = productService.getProductsByDescriptionLikeAndPriceGreaterThan(description, price);
+        return ResponseEntity.ok(products);
+    }
 }

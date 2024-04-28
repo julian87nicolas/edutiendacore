@@ -46,4 +46,19 @@ public class ProductServiceImpl implements ProductService {
     public void updateProduct(Product product) {
 
     }
+
+    @Override
+    public List<Product> getProductsByPriceLessThan(Double price) {
+        return List.of();
+    }
+
+    @Override
+    public List<Product> getProductsByTitleLike(String name) {
+        return List.of();
+    }
+
+    @Override
+    public List<Product> getProductsByDescriptionLikeAndPriceGreaterThan(String description, Double price) {
+        return List.of();
+    }
 }

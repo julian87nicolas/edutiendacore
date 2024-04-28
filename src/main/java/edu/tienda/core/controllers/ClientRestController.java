@@ -21,11 +21,10 @@ import java.util.regex.Pattern;
 @RequestMapping("/clients")
 public class ClientRestController {
 
-    @Autowired
-    private ClientService clientService;
-
     private static final String CLIENT_NOT_FOUND = "Client %s not found";
     private static final String CLIENT_ALREADY_EXISTS = "Client %s already exists";
+    @Autowired
+    private ClientService clientService;
 
     @GetMapping
     public ResponseEntity<?> getClients() {
@@ -42,15 +41,17 @@ public class ClientRestController {
 
     @PutMapping
     ResponseEntity<?> updateClient(@RequestBody Client client) {
-        if (client.getPassword().length() < 8 ) {
+        if (client.getPassword().length() < 8) {
             throw new BadRequestException("Password must have at least 8 characters");
         }
-        if (!isValidEmail(client.getEmail())) {
+        if ( !isValidEmail(client.getEmail())) {
             throw new BadRequestException("Invalid email");
         }
         Client foundedClient = clientService.getClients().stream()
                 .filter(cli -> cli.getUsername().equalsIgnoreCase(client.getUsername()))
                 .findFirst().orElseThrow(() -> new ResourceNotFoundException(String.format(CLIENT_NOT_FOUND, client)));
+        String password = client.getPassword().equals(null) ? "" : client.getPassword();
+
         foundedClient.setPassword(client.getPassword());
         foundedClient.setEmail(client.getEmail());
 

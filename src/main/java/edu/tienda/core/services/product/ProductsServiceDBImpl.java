@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service("DB")
@@ -58,5 +59,44 @@ public class ProductsServiceDBImpl implements ProductService {
                         productEntity.getDescription(),
                         productEntity.getPrice()
                 )).findFirst().orElseThrow( () -> new RuntimeException("Product not found"));
+    }
+
+    @Override
+    public List<Product> getProductsByPriceLessThan(Double price) {
+        return productsRepository.findByPriceLessThan(price)
+                .stream().map(productEntity -> {
+                    Product product = new Product(
+                            productEntity.getId(),
+                            productEntity.getTitle(),
+                            productEntity.getDescription(),
+                            productEntity.getPrice());
+                    return product;
+                }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> getProductsByTitleLike(String name) {
+        return productsRepository.findByTitleLike(name)
+                .stream().map(productEntity -> {
+                    Product product = new Product(
+                            productEntity.getId(),
+                            productEntity.getTitle(),
+                            productEntity.getDescription(),
+                            productEntity.getPrice());
+                    return product;
+                }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> getProductsByDescriptionLikeAndPriceGreaterThan(String description, Double price) {
+        return productsRepository.findByDescriptionLikeAndPriceGreaterThan(description, price)
+                .stream().map(productEntity -> {
+                    Product product = new Product(
+                            productEntity.getId(),
+                            productEntity.getTitle(),
+                            productEntity.getDescription(),
+                            productEntity.getPrice());
+                    return product;
+                }).collect(Collectors.toList());
     }
 }
