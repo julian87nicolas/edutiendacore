@@ -12,4 +12,5 @@ public interface ProductService {
     public List<Product> getProductsByPriceLessThan(Double price);
     public List<Product> getProductsByTitleLike(String name);
     public List<Product> getProductsByDescriptionLikeAndPriceGreaterThan(String description, Double price);
+
 }
