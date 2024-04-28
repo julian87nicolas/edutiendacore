@@ -2,7 +2,9 @@ package edu.tienda.core.services.client;
 
 import edu.tienda.core.domain.Client;
 import edu.tienda.core.persistance.entities.ClientEntity;
+import edu.tienda.core.persistance.entities.ProductEntity;
 import edu.tienda.core.persistance.repositories.ClientRepository;
+import edu.tienda.core.persistance.repositories.ProductsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -20,6 +22,8 @@ public class ClientServiceDBImpl implements ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    ProductsRepository productsRepository;
 
     @Override
     public List<Client> getClients() {
@@ -52,5 +56,16 @@ public class ClientServiceDBImpl implements ClientService {
                         clientEntity.getPassword(),
                         clientEntity.getEmail()
                 )).findFirst().orElseThrow( () -> new RuntimeException("Client not found"));
+    }
+
+    @Override
+    public void addPurchaseToClient(String username, Integer productId) {
+        ClientEntity clientEntity = clientRepository.findById(username)
+                .orElseThrow( () -> new RuntimeException("Client not found"));
+        ProductEntity productEntity = productsRepository.findById(productId)
+                .orElseThrow( () -> new RuntimeException("Product not found"));
+
+        clientEntity.addProductToHistoricalPurchases(productEntity);
+        clientRepository.save(clientEntity);
     }
 }

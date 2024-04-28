@@ -83,9 +83,20 @@ public class ClientRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{username}/addProduct/{productId}")
+    public ResponseEntity<?> addProductToClient(@PathVariable String username, @PathVariable Integer productId) {
+        Client foundedClient = clientService.getClients().stream()
+                .filter(cli -> cli.getUsername().equalsIgnoreCase(username))
+                .findFirst().orElseThrow(() -> new ResourceNotFoundException(String.format(CLIENT_NOT_FOUND, username)));
+
+        clientService.addPurchaseToClient(username, productId);
+        return ResponseEntity.ok(foundedClient);
+    }
+
     public boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern pattern = Pattern.compile(emailRegex);
         return pattern.matcher(email).matches();
     }
+
 }

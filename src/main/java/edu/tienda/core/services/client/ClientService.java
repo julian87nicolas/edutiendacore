@@ -9,4 +9,5 @@ public interface ClientService {
     public void addClient(Client client);
     public void deleteClient(String username);
     public void updateClient(Client client);
+    public void addPurchaseToClient(String username, Integer productId);
 }
