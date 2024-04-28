@@ -1,0 +1,2 @@
+!#bin/bash
+docker run --name mypostgres2 -p 5432:5432 -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=store -d postgres
