@@ -22,9 +22,6 @@ public class ProductRestController {
     @Lazy
     private ProductService productService;
 
-    @Autowired
-    private ConfigurationParameters configurationParameters;
-
     @GetMapping
     public ResponseEntity<?> getProducts() {
         List<Product> products = productService.getProducts();
