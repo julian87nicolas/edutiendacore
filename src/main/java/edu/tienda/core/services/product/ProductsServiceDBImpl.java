@@ -52,7 +52,7 @@ public class ProductsServiceDBImpl implements ProductService {
 
     @Override
     public void updateProduct(Product product) {
-        Product foundedProduct = productsRepository.findById(product.getId())
+        productsRepository.findById(product.getId())
                 .stream().map(productEntity -> new Product(
                         productEntity.getId(),
                         productEntity.getTitle(),
@@ -64,39 +64,30 @@ public class ProductsServiceDBImpl implements ProductService {
     @Override
     public List<Product> getProductsByPriceLessThan(Double price) {
         return productsRepository.findByPriceLessThan(price)
-                .stream().map(productEntity -> {
-                    Product product = new Product(
-                            productEntity.getId(),
-                            productEntity.getTitle(),
-                            productEntity.getDescription(),
-                            productEntity.getPrice());
-                    return product;
-                }).collect(Collectors.toList());
+                .stream().map(productEntity -> new Product(
+                        productEntity.getId(),
+                        productEntity.getTitle(),
+                        productEntity.getDescription(),
+                        productEntity.getPrice())).collect(Collectors.toList());
     }
 
     @Override
     public List<Product> getProductsByTitleLike(String name) {
         return productsRepository.findByTitleLike(name)
-                .stream().map(productEntity -> {
-                    Product product = new Product(
-                            productEntity.getId(),
-                            productEntity.getTitle(),
-                            productEntity.getDescription(),
-                            productEntity.getPrice());
-                    return product;
-                }).collect(Collectors.toList());
+                .stream().map(productEntity -> new Product(
+                        productEntity.getId(),
+                        productEntity.getTitle(),
+                        productEntity.getDescription(),
+                        productEntity.getPrice())).collect(Collectors.toList());
     }
 
     @Override
     public List<Product> getProductsByDescriptionLikeAndPriceGreaterThan(String description, Double price) {
         return productsRepository.findByDescriptionLikeAndPriceGreaterThan(description, price)
-                .stream().map(productEntity -> {
-                    Product product = new Product(
-                            productEntity.getId(),
-                            productEntity.getTitle(),
-                            productEntity.getDescription(),
-                            productEntity.getPrice());
-                    return product;
-                }).collect(Collectors.toList());
+                .stream().map(productEntity -> new Product(
+                        productEntity.getId(),
+                        productEntity.getTitle(),
+                        productEntity.getDescription(),
+                        productEntity.getPrice())).collect(Collectors.toList());
     }
 }
