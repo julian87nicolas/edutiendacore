@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -59,5 +60,59 @@ public class ProductServiceDBImplTest {
 
         productService.addProduct(new Product(4, "Product 4", "Description 4", 400.0));
         assertEquals(productEntities.size(), 4);
+    }
+
+    @Test
+    public void deleteProductTest() {
+        Integer idProductTodelete = 2;
+        int indexProductToDelete = productEntities.indexOf(
+                productEntities.stream().filter( p -> p.getId().equals(idProductTodelete)).findFirst().get());
+
+        Mockito.doAnswer(invocation -> {
+            productEntities.remove(indexProductToDelete);
+            return null;
+        }).when(productsRepository).deleteById(ArgumentMatchers.anyInt());
+
+        productService.deleteProduct(idProductTodelete);
+
+        assertEquals(productEntities.size(), 2);
+    }
+
+    @Test
+    public void updateProductTest() {
+        List<Product> productsLocal = List.copyOf(products);
+        Product productToUpdate = productsLocal.get(2);
+        String updatedDescription = "Updated Description for element 3";
+        productToUpdate.setDescription(updatedDescription);
+        Integer idProductToUpdate = productToUpdate.getId();
+        int indexProductToUpdate = productEntities.indexOf(
+                productEntities.stream().filter( p -> p.getId().equals(idProductToUpdate)).findFirst().get());
+        Mockito.when(productsRepository.findById(ArgumentMatchers.any()))
+                .then(invocation ->  Optional.of(productEntities.get(indexProductToUpdate)));
+
+        Mockito.when(productsRepository.save(ArgumentMatchers.any()))
+                .then(invocation -> {
+                    products.get(indexProductToUpdate).setTitle(productToUpdate.getTitle());
+                    products.get(indexProductToUpdate).setDescription(productToUpdate.getDescription());
+                    products.get(indexProductToUpdate).setPrice(productToUpdate.getPrice());
+                    return null;
+                });
+        productService.updateProduct(productToUpdate);
+        assertEquals(products.get(indexProductToUpdate),productToUpdate);
+    }
+
+    @Test
+    public void getProductsByPriceLessThanTest() {
+
+    }
+
+    @Test
+    public void getProductsByTitleLikeTest() {
+
+    }
+
+    @Test
+    public void getProductsByDescriptionLikeAndPriceGreaterThanTest() {
+
     }
 }
