@@ -42,11 +42,10 @@ public class ProductRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Integer id, @RequestBody Product product) {
-        if(product.getId().equals(null)) {
+        if(product.getId() == (null)) {
             product.setId(id);
         }
-        productService.updateProduct(product);
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(productService.updateProduct(product));
     }
 
     @GetMapping("/priceless")

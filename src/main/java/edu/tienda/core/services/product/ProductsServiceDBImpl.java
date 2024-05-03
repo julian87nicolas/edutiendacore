@@ -6,14 +6,18 @@ import edu.tienda.core.persistance.repositories.ProductsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service("DB")
+@Primary
 @ConditionalOnProperty(
         value="product.strategy",
         havingValue = "ON_DB")
@@ -51,14 +55,16 @@ public class ProductsServiceDBImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(Product product) {
-        productsRepository.findById(product.getId())
-                .stream().map(productEntity -> new Product(
+    public ProductEntity updateProduct(Product product) {
+        ProductEntity updatedProduct = productsRepository.findById(product.getId())
+                .stream().map(productEntity -> new ProductEntity(
                         productEntity.getId(),
-                        productEntity.getTitle(),
-                        productEntity.getDescription(),
-                        productEntity.getPrice()
+                        product.getTitle() != null ? product.getTitle() : productEntity.getTitle(),
+                        product.getDescription() != null ? product.getDescription() : productEntity.getDescription(),
+                        product.getPrice() != null ? product.getPrice() : productEntity.getPrice()
                 )).findFirst().orElseThrow( () -> new RuntimeException("Product not found"));
+        productsRepository.save(updatedProduct);
+        return updatedProduct;
     }
 
     @Override

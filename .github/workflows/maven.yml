@@ -27,6 +27,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: Download postgresql db
+      run: docker pull postgres
+    - name: Run docker postgres
+      run: docker run --name mypostgres2 -p 5432:5432 -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=store -d postgres
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
