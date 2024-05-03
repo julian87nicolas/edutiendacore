@@ -49,13 +49,16 @@ public class ClientServiceDBImpl implements ClientService {
     }
 
     @Override
-    public void updateClient(Client client) {
-        Client foundedClient = clientRepository.findById(client.getUsername())
-                .stream().map(clientEntity -> new Client(
-                        clientEntity.getUsername(),
-                        clientEntity.getPassword(),
-                        clientEntity.getEmail()
+    public ClientEntity updateClient(Client client) {
+        ClientEntity updatedClient = clientRepository.findById(client.getUsername())
+                .stream().map(clientEntity -> new ClientEntity(
+                        client.getEmail() != null ? client.getEmail() : clientEntity.getUsername(),
+                        client.getPassword() != null ? client.getPassword() : clientEntity.getPassword(),
+                        client.getEmail() != null ? client.getEmail() : clientEntity.getEmail()
                 )).findFirst().orElseThrow( () -> new RuntimeException("Client not found"));
+
+        clientRepository.save(updatedClient);
+        return updatedClient;
     }
 
     @Override

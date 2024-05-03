@@ -1,6 +1,7 @@
 package edu.tienda.core.services.product;
 
 import edu.tienda.core.domain.Product;
+import edu.tienda.core.persistance.entities.ProductEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Lazy;
@@ -43,8 +44,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(Product product) {
-
+    public ProductEntity updateProduct(Product product) {
+        return null;
     }
 
     @Override
