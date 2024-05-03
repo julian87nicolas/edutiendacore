@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class ProductServiceDBImplTest {
@@ -103,16 +104,35 @@ public class ProductServiceDBImplTest {
 
     @Test
     public void getProductsByPriceLessThanTest() {
+        Double upperPrice = 250D;
+        Mockito.when(productsRepository.findByPriceLessThan(ArgumentMatchers.any()))
+                .then(invocation -> productEntities.stream().filter(productEntity -> productEntity.getPrice() < upperPrice).findFirst().stream().toList());
 
+        List<Product> productsFiltered = productService.getProductsByPriceLessThan(upperPrice);
+        assertTrue(productsFiltered.stream().anyMatch(product -> product.getPrice() < upperPrice));
     }
 
     @Test
     public void getProductsByTitleLikeTest() {
-
+        String titleFilter = "Product 3";
+        Mockito.when(productsRepository.findByTitleLike(ArgumentMatchers.any()))
+                .then(invocation -> productEntities.stream().filter(productEntity -> productEntity.getTitle().equals(titleFilter)).findFirst().stream().toList());
+        List<Product> productFiltered = productService.getProductsByTitleLike(titleFilter);
+        assertEquals(productFiltered.stream().findFirst().get().getTitle(), titleFilter);
     }
 
     @Test
     public void getProductsByDescriptionLikeAndPriceGreaterThanTest() {
+        String descriptionFilter = "Description 1";
+        Double priceFilter = 99.0;
 
+        Mockito.when(productsRepository.findByDescriptionLikeAndPriceGreaterThan(ArgumentMatchers.any(), ArgumentMatchers.any()))
+                .then(invocation -> productEntities.stream().filter(productEntity -> productEntity.getDescription().equals(descriptionFilter) && productEntity.getPrice() > priceFilter)
+                        .findFirst().stream().toList());
+
+        List<Product> productsFiltered = productService.getProductsByDescriptionLikeAndPriceGreaterThan(descriptionFilter, priceFilter);
+
+        assertTrue(productsFiltered.stream().anyMatch(product -> product.getDescription().equals(descriptionFilter)));
+        assertTrue(productsFiltered.stream().anyMatch(product -> product.getPrice() > priceFilter));
     }
 }
