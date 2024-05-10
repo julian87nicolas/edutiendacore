@@ -7,6 +7,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ClientRenderController {
 
+//    @GetMapping(path = "/signup")
+//    public String signUpForm() {
+//        // Render form located on src/resources/templates/signup.html
+//        return "signup";
+//    }
+//
+//    @GetMapping(path = "/login")
+//    public String loginForm() {
+//        return "login";
+//    }
+
     @GetMapping(value = "/clients-html", produces = MediaType.TEXT_HTML_VALUE)
     public String getClientsAsHtml() {
         StringBuilder sb = new StringBuilder();

@@ -8,6 +8,7 @@ import edu.tienda.core.persistance.repositories.ProductsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class ClientServiceDBImpl implements ClientService {
     private ClientRepository clientRepository;
     @Autowired
     ProductsRepository productsRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Client> getClients() {
@@ -37,6 +39,7 @@ public class ClientServiceDBImpl implements ClientService {
 
     @Override
     public void addClient(Client client) {
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
         clientRepository.save( new ClientEntity(
                 client.getUsername(),
                 client.getPassword(),
