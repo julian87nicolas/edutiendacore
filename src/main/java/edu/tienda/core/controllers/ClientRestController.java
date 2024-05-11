@@ -55,7 +55,7 @@ public class ClientRestController {
         return ResponseEntity.ok(foundedClient);
     }
 
-    @PostMapping("/signup")
+    @PostMapping
     public ResponseEntity<?> addClient(@RequestBody Client client) {
         if (clientService.getClients().stream().anyMatch(cli -> cli.getUsername().equalsIgnoreCase(client.getUsername()))) {
             throw new BadRequestException(String.format(CLIENT_ALREADY_EXISTS, client.getUsername()));
