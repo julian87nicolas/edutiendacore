@@ -20,10 +20,6 @@ public class ProductEntity {
     private String title;
     private String description;
     private Double price;
-
-    public Product toProduct() {
-        return new Product(this.id, this.title, this.description, this.price);
-    }
 }
 
 

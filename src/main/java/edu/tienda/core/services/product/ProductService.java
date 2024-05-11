@@ -6,12 +6,12 @@ import edu.tienda.core.persistance.entities.ProductEntity;
 import java.util.List;
 
 public interface ProductService {
-    public List<Product> getProducts();
-    public void addProduct(Product product);
-    public void deleteProduct(Integer id);
-    public ProductEntity updateProduct(Product product);
-    public List<Product> getProductsByPriceLessThan(Double price);
-    public List<Product> getProductsByTitleLike(String name);
-    public List<Product> getProductsByDescriptionLikeAndPriceGreaterThan(String description, Double price);
+    List<Product> getProducts();
+    void addProduct(Product product);
+    void deleteProduct(Integer id);
+    ProductEntity updateProduct(Product product);
+    List<Product> getProductsByPriceLessThan(Double price);
+    List<Product> getProductsByTitleLike(String name);
+    List<Product> getProductsByDescriptionLikeAndPriceGreaterThan(String description, Double price);
 
 }
