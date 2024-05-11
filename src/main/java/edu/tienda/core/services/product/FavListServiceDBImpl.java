@@ -1,18 +1,25 @@
 package edu.tienda.core.services.product;
 
 import edu.tienda.core.domain.FavList;
-import edu.tienda.core.domain.Product;
 import edu.tienda.core.exceptions.ResourceNotFoundException;
 import edu.tienda.core.persistance.entities.FavListEntity;
 import edu.tienda.core.persistance.entities.ProductEntity;
 import edu.tienda.core.persistance.repositories.FavListRepository;
+import edu.tienda.core.persistance.repositories.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
+@Service
 public class FavListServiceDBImpl implements FavListService {
 
+    @Autowired
     FavListRepository favListRepository;
+
+    @Autowired
+    ProductsRepository productsRepository;
 
     @Override
     public FavListEntity create(FavList favList) {
@@ -37,11 +44,12 @@ public class FavListServiceDBImpl implements FavListService {
         if (favListEntity == null) {
             throw new ResourceNotFoundException("List not founded.");
         }
-        FavListEntity updatedFavList = new FavListEntity().builder()
+        FavListEntity updatedFavList = FavListEntity.builder()
                 .name(favList.getName() != null ? favList.getName() : favListEntity.getName())
                 .tag(favList.getTag() != null ? favList.getTag() : favListEntity.getTag())
                 .build();
 
+        favListEntity.setLastUpdateDate(new Date());
         favListRepository.save(updatedFavList);
         return updatedFavList;
     }
@@ -63,12 +71,18 @@ public class FavListServiceDBImpl implements FavListService {
     }
 
     @Override
-    public void addProductToList(String username, String listName, ProductEntity product) {
-        FavListEntity favListEntity = favListRepository.findFavListEntityByUsernameAndName(username, listName);
+    public void addProductToList(String username, Integer listId, Integer productId) {
+        FavListEntity favListEntity = favListRepository.findFavListEntityById(listId);
         if(favListEntity == null) {
             throw new ResourceNotFoundException("Fav list not founded");
         }
-        favListEntity.addProductToList(product);
+        ProductEntity productEntity = productsRepository.findProductEntityById(productId);
+        if(productEntity == null) {
+            throw new ResourceNotFoundException("Product not founded");
+        }
+        favListEntity.setLastUpdateDate(new Date());
+        favListEntity.addProductToList(productEntity);
+        favListRepository.save(favListEntity);
     }
 
     @Override
@@ -77,6 +91,7 @@ public class FavListServiceDBImpl implements FavListService {
         if(favListEntity == null) {
             throw new ResourceNotFoundException("Fav list not founded");
         }
+        favListEntity.setLastUpdateDate(new Date());
         favListEntity.removeProductFromList(product);
     }
 }
