@@ -13,4 +13,5 @@ public interface ProductsRepository extends JpaRepository<ProductEntity, Integer
     List<ProductEntity> findByPriceLessThan(Double price);
     List<ProductEntity> findByTitleLike(String name);
     List<ProductEntity> findByDescriptionLikeAndPriceGreaterThan(String description, Double price);
+    ProductEntity findProductEntityById(Integer id);
 }
