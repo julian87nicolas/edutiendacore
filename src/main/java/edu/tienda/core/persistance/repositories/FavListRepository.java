@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface FavListRepository extends JpaRepository<FavListEntity, Integer> {
     FavListEntity findFavListEntityById(Integer id);
+    FavListEntity findFavListEntityByIdAndUsername(Integer id, String username);
     FavListEntity findFavListEntityByUsernameAndName(String username, String name);
     List<FavListEntity> findFavListEntitiesByUsername(String username);
 }

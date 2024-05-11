@@ -24,10 +24,18 @@ public class FavListController {
     JwtService jwtService;
 
     @PostMapping
-    public void createFavList(@RequestBody FavList favList, HttpServletRequest request) {
+    public ResponseEntity<?> create(@RequestBody FavList favList, HttpServletRequest request) {
         String username = getUsernameFromToken(request);
         favList.setUsername(username);
         favListService.create(favList);
+        return ResponseEntity.ok(favList);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> read(@PathVariable Integer id, HttpServletRequest request) {
+        String username = getUsernameFromToken(request);
+        FavListEntity favList = favListService.read(id, username);
+        return ResponseEntity.ok(favList);
     }
 
     @PostMapping("/add/{listId}")

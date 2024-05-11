@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface FavListService {
     FavListEntity create(FavList favList);
-    FavListEntity read(Integer id);
+    FavListEntity read(Integer id, String username);
     FavListEntity update(FavList favList);
     void delete(Integer id);
     List<FavListEntity> readAll(String username);

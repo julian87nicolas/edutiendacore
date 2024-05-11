@@ -34,8 +34,8 @@ public class FavListServiceDBImpl implements FavListService {
     }
 
     @Override
-    public FavListEntity read(Integer id) {
-        return favListRepository.findFavListEntityById(id);
+    public FavListEntity read(Integer id, String username) {
+        return favListRepository.findFavListEntityByIdAndUsername(id, username);
     }
 
     @Override
