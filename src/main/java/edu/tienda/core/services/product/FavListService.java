@@ -12,6 +12,6 @@ public interface FavListService {
     FavListEntity update(FavList favList);
     void delete(Integer id);
     List<FavListEntity> readAll(String username);
-    void addProductToList(String username, String listName, ProductEntity product);
+    void addProductToList(String username, Integer listId, Integer productId);
     void removeProductFromList(String username, String listName, ProductEntity product);
 }
