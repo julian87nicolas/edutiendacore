@@ -1,5 +1,9 @@
-package edu.tienda.core.auth;
+package edu.tienda.core.auth.controller;
 
+import edu.tienda.core.auth.domain.AuthResponse;
+import edu.tienda.core.auth.domain.LoginRequest;
+import edu.tienda.core.auth.domain.RegisterRequest;
+import edu.tienda.core.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
