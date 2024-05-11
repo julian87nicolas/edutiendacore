@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FavList {
+    Integer id;
     String name;
     String tag;
     String username;
