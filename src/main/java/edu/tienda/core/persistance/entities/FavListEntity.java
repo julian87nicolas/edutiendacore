@@ -3,6 +3,7 @@ package edu.tienda.core.persistance.entities;
 import edu.tienda.core.domain.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class FavListEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -34,5 +36,13 @@ public class FavListEntity {
         creationDate = new Date();
         lastUpdateDate = new Date();
         productList = new ArrayList<>();
+    }
+
+    public void addProductToList(ProductEntity product) {
+        productList.add(product);
+    }
+
+    public void removeProductFromList(ProductEntity product) {
+        productList.remove(product);
     }
 }
