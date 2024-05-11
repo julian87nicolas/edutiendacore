@@ -1,6 +1,7 @@
 package edu.tienda.core.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.tienda.core.auth.jwt.JwtAuthenticationFilter;
 import edu.tienda.core.domain.Product;
 import edu.tienda.core.services.product.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -21,7 +23,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -34,6 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProductRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @MockBean
     private ProductService productService;
@@ -59,6 +63,7 @@ public class ProductRestControllerTest {
 
 
     @Test
+    @WithMockUser(username = "testUser", roles = {"USER"})
     public void addProductTest() throws Exception {
         doAnswer(invocation -> {
             products.add(new Product(3, "Product 3", "Description 3", 300.0));
